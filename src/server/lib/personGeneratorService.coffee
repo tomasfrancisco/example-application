@@ -5,13 +5,16 @@ ipify = require 'ipify'
 
 serviceName = 'person-generator'
 
-personGeneratorService = (callback) ->
+getServiceAddress = (callback) ->
   consul.catalog.service.nodes serviceName, (err, result) ->
-    throw err if err
-    data = {
-      address:  result[0].ServiceAddress
-      port:     result[0].ServicePort
-    }
-    callback data
+    callback err if err
+    if result and result[0]
+      data = {
+        address:  result[0].ServiceAddress
+        port:     result[0].ServicePort
+      }
+      callback null, data
 
-module.exports = personGeneratorService
+module.exports = {
+  getServiceAddress
+}

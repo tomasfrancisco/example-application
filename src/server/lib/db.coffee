@@ -12,11 +12,13 @@ dbConfig = {
   }
 }
 
+# connect to database
 onConnect = (callback) ->
   r.connect host: dbConfig.host, port: dbConfig.port, (err, connection) ->
     connection['_id'] = Math.floor Math.random() * 10001
     callback err, connection
 
+# Create database and his tables
 module.exports.setup = () ->
   r.connect host: dbConfig.host, port: dbConfig.port, (err, connection) ->
     r.dbCreate dbConfig.db
@@ -36,6 +38,7 @@ module.exports.setup = () ->
                 else
                   log.info "RethinkDB table '%s' created", table
 
+# save person json object
 module.exports.savePerson = (person, callback) ->
   onConnect (err, connection) ->
     r.db dbConfig.db
@@ -52,6 +55,7 @@ module.exports.savePerson = (person, callback) ->
             callback null, false
         connection.close()
 
+# subscribe to person table changes with script
 module.exports.personChanges = (filter, callback) ->
   onConnect (err, connection) ->
     log.error "Error on connection:", err if err
@@ -62,6 +66,7 @@ module.exports.personChanges = (filter, callback) ->
       .run connection, (err, cursor) ->
         callback(err, cursor)
 
+# persons filter with default values
 module.exports.personsFilter = (ageMin = 0, ageMax = Number.MAX_SAFE_INTEGER, gender = 'both') ->
   log.info "[NEW FILTER] ageMin: %s, ageMax: %s, gender: %s", ageMin, ageMax, gender
   return r.row("new_val")("age").lt(parseInt(ageMax)).and(r.row("new_val")("age").gt(parseInt(ageMin)).and(r.row("new_val")("gender").eq(if gender is 'both' then r.row("new_val")("gender") else gender)))
