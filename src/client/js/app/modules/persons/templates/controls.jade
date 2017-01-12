@@ -1,0 +1,53 @@
+h4 Controls
+
+div.btn-group
+  if pause
+    button(class="btn-primary").btn.pause.active
+      span(class="glyphicon glyphicon-play")
+      span Play
+  else
+    button(class="btn-primary").btn.pause
+      span(class="glyphicon glyphicon-pause")
+      span Pause
+
+div.btn-group
+  button(class="btn-primary").btn.filter-age Filter by age < 30
+
+.container
+  .row
+    .col-xs-12
+      .panel.panel-primary
+        .panel-heading Filtering options
+        .panel-body
+          .row
+            .col-xs-3
+              .row
+                .col-xs-1
+                  input(type="checkbox", name="age-min")#age-min-checkbox
+                .col-xs-4.text-nowrap Age <b>min</b> than
+                .col-xs-6
+                  input(type="text", value="30")#age-min-input.form-control.input-sm
+            .col-xs-3
+              .col-xs-1
+                input(type="radio", name="genre", value="male")#genre-checkbox
+              .col-xs-4.text-nowrap Male
+            .col-xs-3
+            .col-xs-1
+          .row
+            .col-xs-3
+              .row
+                .col-xs-1
+                  input(type="checkbox", name="age-max")#age-max-checkbox
+                .col-xs-4.text-nowrap Age <b>max</b> than
+                .col-xs-6
+                  input(type="text", value="30")#age-max-input.form-control.input-sm
+            .col-xs-3
+              .col-xs-1
+                input(type="radio", name="genre", value="female")#genre-checkbox
+              .col-xs-4.text-nowrap Female
+          .row
+            .col-xs-3
+            .col-xs-3
+              .col-xs-1
+                input(type="radio", name="genre", value="both", checked)#genre-checkbox
+              .col-xs-4.text-nowrap Both
